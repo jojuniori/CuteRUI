@@ -1,0 +1,3 @@
+[submodule "ext\\CuteR"]
+	path = ext\\CuteR
+	url = https://github.com/chinuno-usami/CuteR.git
