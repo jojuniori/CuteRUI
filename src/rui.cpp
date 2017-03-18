@@ -77,7 +77,7 @@ public:
 		// close button
 		auto close_button_ = std::make_shared<ImageButton>(backgroud, close_png, close_png_size);
 		backgroud->addChild(close_button_);
-		close_button_->setPosition(PointType{ 364.0f, y });
+		close_button_->setPosition(PointType{ 377.0f, 20.0f });
 		close_button_->setSize(SizeType{ 16.0f, 16.0f });
 		close_button_->setBackgroundColor(nvgRGBA(0xf4, 0x65, 0x59, 0xff));
 		close_button_->setHoveredColor(nvgRGBA(0xf4, 0x65, 0x59, 0xcc));
@@ -111,7 +111,7 @@ public:
 		source->mouse_button_signal.connect([this](int button, int action, int mods)
 		{
 			if (button == GLFW_MOUSE_BUTTON_1 && action == GLFW_RELEASE) {
-				this->open(L"https://github.com/jojuniori/CuteRUI/invitations");
+				this->open(L"https://github.com/jojuniori/CuteRUI");
 			}
 			return false;
 		});
