@@ -151,5 +151,14 @@ GLFWwindow * Window::window() const
 	return window_;
 }
 
+void Window::hide()
+{
+	glfwHideWindow(window_);
+}
+
+void Window::show()
+{
+	glfwShowWindow(window_);
+}
 }
 }

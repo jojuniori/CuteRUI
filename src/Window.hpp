@@ -36,6 +36,9 @@ public:
 	bool shouldClose() const;
 	void close();
 
+	void hide();
+	void show();
+
 	GLFWwindow * window() const;
 protected:
     class GLContext;

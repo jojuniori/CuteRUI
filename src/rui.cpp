@@ -79,7 +79,7 @@ public:
 		close_button_->mouse_button_signal.connect([this](int button, int action, int mods)
 		{
 			if (button == GLFW_MOUSE_BUTTON_1 && action == GLFW_RELEASE) {
-				this->close();
+				this->hide();
 			}
 			return false;
 		});
@@ -121,9 +121,14 @@ public:
 		});
 	}
 
-	void close()
+	void hide()
 	{
-		window_.close();
+		window_.hide();
+	}
+
+	void show()
+	{
+		window_.show();
 	}
 
 	void open(const std::wstring& url)
@@ -153,9 +158,7 @@ public:
 			auto interval = time - time_pre;
 			window_.draw(interval);
 			if (about_ != nullptr) {
-				if (about_->main_loop(interval)) {
-					about_ = nullptr;
-				}
+				(about_->main_loop(interval));
 			}
 			time_pre = time;
 
@@ -225,6 +228,8 @@ public:
 				if (this->about_ == nullptr) {
 					this->about_ = std::make_shared<AboutDialog>();
 					this->about_->init();
+				} else {
+					this->about_->show();
 				}
 			}
 			return false;
