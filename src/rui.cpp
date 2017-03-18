@@ -38,18 +38,10 @@ public:
 	{
 	}
 
-	void main_loop()
+	bool main_loop(float interval)
 	{
-		auto time_pre = glfwGetTime();
-		/* Loop until the user closes the window */
-		while (!window_.shouldClose())
-		{
-			auto time = glfwGetTime();
-			auto interval = time - time_pre;
-			window_.draw(interval);
-			time_pre = time;
-			glfwWaitEvents();
-		}
+		window_.draw(interval);
+		return window_.shouldClose();
 	}
 
 	void init()
@@ -161,8 +153,9 @@ public:
 			auto interval = time - time_pre;
 			window_.draw(interval);
 			if (about_ != nullptr) {
-				about_->main_loop();
-				about_ = nullptr;
+				if (about_->main_loop(interval)) {
+					about_ = nullptr;
+				}
 			}
 			time_pre = time;
 
