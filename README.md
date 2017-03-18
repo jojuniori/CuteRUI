@@ -2,6 +2,12 @@
 
 Use GUI combine QR Code with picture
 
+This software uses code from the CuteR.  
+This program is redistributed in GNU General Public License Version 3.
+
+Developed by Skim.  
+Designed by JoJun.
+
 # Sample
 
 Drag & Drop image into box  
