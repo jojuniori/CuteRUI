@@ -13,11 +13,13 @@ static void drop_callback(GLFWwindow * window, int count, const char ** paths);
 
 struct EventDispatcher::WindowContext {
 public:
-	explicit WindowContext (std::shared_ptr<Widget> widget) : active(false), root_widget(widget), entered_widget(), text_focus()
+	explicit WindowContext (std::shared_ptr<Widget> widget) : active(false), root_widget(widget), entered_widget(), text_focus(), dragged(false)
 	{
 	}
 
 	bool active;
+    bool dragged;
+    double drag_x, drag_y;
 	std::weak_ptr<Widget> root_widget;
 	std::weak_ptr<Widget> entered_widget;
 	std::weak_ptr<Widget> text_focus;
@@ -125,26 +127,24 @@ void EventDispatcher::handleCursorPosEvent(GLFWwindow* window, double x, double 
 	}
 
 	// default pos event handler
-	static bool dragged = false;
-	static double ox, oy;
 	if (!handled) {
-		if (dragged) {
+		if (context->second->dragged) {
 			double xx, yy;
 			int xpos, ypos;
 			glfwGetWindowPos(window, &xpos, &ypos);
 			glfwGetCursorPos(window, &xx, &yy);
-			glfwSetWindowPos(window, xpos + xx - ox, ypos + yy - oy);
+			glfwSetWindowPos(window, xpos + xx - context->second->drag_x, ypos + yy - context->second->drag_y);
 		}
 
 		if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_1) == GLFW_TRUE) {
-			if (!dragged) {
-				ox = x;
-				oy = y;
-				dragged = true;
+			if (!context->second->dragged) {
+				context->second->drag_x = x;
+				context->second->drag_y = y;
+				context->second->dragged = true;
 			}
 		}
 		else {
-			dragged = false;
+			context->second->dragged = false;
 		}
 	}
 }
