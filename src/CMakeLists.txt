@@ -1,15 +1,15 @@
 find_package (Boost REQUIRED)
 
 if (WIN32)
-#  add_custom_target(CuteR ALL python "${CMAKE_CURRENT_LIST_DIR}/setup.py" py2exe SOURCES setup.py)
+  add_custom_target(CuteR ALL python "${CMAKE_CURRENT_LIST_DIR}/setup.py" py2exe SOURCES setup.py)
 else ()
-#  add_custom_target(CuteR ALL cxfreeze "${CMAKE_CURRENT_LIST_DIR}/../ext/CuteR/CuteR/CuteR.py" --target-dir "${CMAKE_BINARY_DIR}/src/dist" SOURCES ../ext/CuteR/CuteR/CuteR.py)
+  add_custom_target(CuteR ALL cxfreeze "${CMAKE_CURRENT_LIST_DIR}/../ext/CuteR/CuteR/CuteR.py" --target-dir "${CMAKE_BINARY_DIR}/src/dist" SOURCES ../ext/CuteR/CuteR/CuteR.py)
 endif ()
 
 include_directories (../ext/glad/include ../lib/moemtk/include ../lib/moemtk/ext/glfw/include ../lib/moemtk/ext/nanovg "${Boost_INCLUDE_DIRS}")
 add_executable (CuteRUI WIN32 rui Button Widget StaticText Image Window EventDispatcher ImageButton TextLoader TextBox ../resource/resource.c ../ext/nanovg/nanovg)
 target_link_libraries (CuteRUI glfw glad)
-#add_dependencies (CuteRUI CuteR)
+add_dependencies (CuteRUI CuteR)
 
 # 2017/03/18  00:33            23,552 CuteR.exe
 # 2017/01/04  06:00           149,504 libpng16.dll
