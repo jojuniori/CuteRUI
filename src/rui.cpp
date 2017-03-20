@@ -175,7 +175,7 @@ public:
 		// main window
 		window_.setSize(SizeType{ 470.0f, 340.0f });
 		// root panel
-		root_panel_ = std::make_shared<Widget>(&window_);
+		root_panel_ = std::make_shared<decorator::Blurred<Widget>>(&window_);
 		root_panel_->setPosition(PointType{ 10.0f, 10.0f });
 		root_panel_->setSize(SizeType{ 450.0f, 320.0f });
 		root_panel_->setBackgroundColor(nvgRGBA(0xff, 0xff, 0xff, 0xff));
@@ -340,7 +340,7 @@ public:
 	}
 
 protected:
-	decorator::Blurred<Window> window_;
+	Window window_;
 	std::shared_ptr<moem::gui::Widget> root_panel_;
 	std::shared_ptr<ImageButton> close_button_;
     std::shared_ptr<Image> changed_image_, unchanged_image_;
