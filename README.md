@@ -2,7 +2,7 @@
 
 Use GUI combine QR Code with picture
 
-This software uses code from the CuteR.  
+This software uses code from the [CuteR](https://github.com/chinuno-usami/CuteR).  
 This program is redistributed in GNU General Public License Version 3.
 
 Developed by Skim.  
