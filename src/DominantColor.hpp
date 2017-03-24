@@ -1,6 +1,7 @@
 #ifndef DOMINANTCOLOR_HPP
 #define DOMINANTCOLOR_HPP
 
+#include <vector>
 #include <Eigen/Core>
 
 class DominantColor {

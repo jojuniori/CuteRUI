@@ -15,12 +15,15 @@
 #include "ImageButton.hpp"
 #include "TextLoader.hpp"
 #include "TextBox.hpp"
+#include "DominantColor.hpp"
 
 #include <GLFW/glfw3.h>
 
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
 #include <boost/algorithm/string.hpp>
+
+#include "../ext/nanovg/stb_image.h"
 
 extern "C" {
 #include "../resource/resource.h"
@@ -283,6 +286,17 @@ public:
         }
     }
 
+	Eigen::Vector3i get_dominant_color(const std::string & filename)
+	{
+		int x, y, n;
+		unsigned char *data = stbi_load(filename.c_str(), &x, &y, &n, 4);
+		DominantColor dc(data, x, y, n);
+		auto colors = dc.find_dominant_colors(1);
+		stbi_image_free(data);
+		std::cout << "Dominant Color: " << std::endl << colors[0] << std::endl;
+		return colors[0];
+	}
+
 	bool process(const std::string & filename)
 	{
 #ifdef _WIN32
@@ -291,15 +305,26 @@ public:
 			return false;
 		}
 
+		auto color = get_dominant_color(filename);
+		int r = color(0) - 75;
+		int g = color(1) - 75;
+		int b = color(2) - 75;
+		if (r < 0) r = 0;
+		if (g < 0) g = 0;
+		if (b < 0) b = 0;
+		std::wstringstream os;
+		
 		static std::wstring_convert<std::codecvt_utf8<wchar_t> > cvt;
 		STARTUPINFOW si;
 		PROCESS_INFORMATION pi;
 		auto ifilename = cvt.from_bytes(filename);
 		auto ofilename = ifilename.substr(0, ifilename.find_last_of(L'.')) + L"_qr";
-		auto fname = L"dist\\CuteR.exe -o \"" + ofilename + L".png\" -C -r 50 50 50 \"" + ifilename + L"\" \"" + cvt.from_bytes(qr_text_input_->value()) + L"\""; // todo
+		os << L"dist\\CuteR.exe -o \"" << ofilename << L".png\" -C -r "
+			<< r << L" " << g << L" " << b << L" \""
+			<< ifilename << L"\" \"" << cvt.from_bytes(qr_text_input_->value()) << L"\"";
 
-		LPWSTR command = new WCHAR[fname.length() + 10]();
-		wcscpy(command, fname.c_str());
+		LPWSTR command = new WCHAR[os.str().length() + 10]();
+		wcscpy(command, os.str().c_str());
 		ZeroMemory(&si, sizeof(si));
 		si.cb = sizeof(si);
 		si.dwFlags = STARTF_USESHOWWINDOW;
