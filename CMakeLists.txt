@@ -2,6 +2,32 @@ project (CuteRUI C CXX)
 cmake_minimum_required (VERSION 3.6)
 set (CMAKE_CXX_STANDARD 11)
 
+option(VISIT_COUNT_ENALBED "Whether use visit count." off)
+
+if (${VISIT_COUNT_ENALBED})
+  add_definitions(-DVISIT_COUNT_ENALBED=1)
+  if (WIN32)
+    find_path(CPPREST_INCLUDE_DIR cpprest/version.h
+      ${CPPREST_DIR}/Release/include
+      $ENV{CPPREST_DIR}/Release/include)
+    set (CPPREST_DIR "${CPPREST_INCLUDE_DIR}/../..")
+    file(STRINGS "${CPPREST_INCLUDE_DIR}/cpprest/version.h" version_file)
+    string(REGEX MATCH "CPPREST_VERSION_MINOR ([0-9]+)" _ ${version_file})
+    set(minor "${CMAKE_MATCH_1}")
+    string(REGEX MATCH "CPPREST_VERSION_MAJOR ([0-9]+)" _ ${version_file})
+    set(major "${CMAKE_MATCH_1}")
+    add_library (cpprest SHARED IMPORTED GLOBAL)
+    set_property (TARGET cpprest PROPERTY INTERFACE_INCLUDE_DIRECTORIES ${CPPREST_INCLUDE_DIR})
+    set_property (TARGET cpprest PROPERTY IMPORTED_LOCATION_DEBUG "${CPPREST_DIR}/Binaries/Win32/Debug/cpprest140d_${major}_${minor}.dll")
+    set_property (TARGET cpprest PROPERTY IMPORTED_IMPLIB_DEBUG "${CPPREST_DIR}/Binaries/Win32/Debug/cpprest140d_${major}_${minor}.lib")
+    set_property (TARGET cpprest PROPERTY IMPORTED_LOCATION_RELEASE "${CPPREST_DIR}/Binaries/Win32/Release/cpprest140_${major}_${minor}.dll")
+    set_property (TARGET cpprest PROPERTY IMPORTED_IMPLIB_RELEASE "${CPPREST_DIR}/Binaries/Win32/Release/cpprest140_${major}_${minor}.lib")
+  else ()
+    find_library(CPPREST_LIB_PATH NAMES cpprest)
+    include("${CPPREST_LIB_PATH}/../cpprest/cpprest-config.cmake")
+  endif ()
+endif ()
+
 find_package (Boost REQUIRED)
 
 set (USE_MSVC_RUNTIME_LIBRARY_DLL OFF CACHE BOOL "force soci to use C++ 11" FORCE)

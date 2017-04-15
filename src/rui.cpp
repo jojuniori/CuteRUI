@@ -2,12 +2,22 @@
 #include <future>
 #include <locale>
 #include <codecvt>
+
 #ifdef _WIN32
 # include <Windows.h>
 # include <direct.h>
 #else
 # include <stdio.h>
+# include <unistd.h>
 #endif
+
+#define VISIT_COUNT_ENALBED 1
+
+#ifdef VISIT_COUNT_ENALBED
+#include <cpprest/http_client.h>
+#include <cpprest/uri.h>
+#endif
+
 #include "Window.hpp"
 #include "StaticText.hpp"
 #include "Image.hpp"
@@ -136,7 +146,11 @@ public:
 
 	void open(const std::wstring& url)
 	{
+#ifdef _WIN32
 		ShellExecuteW(NULL, L"open", url.c_str(), NULL, NULL, SW_SHOWNORMAL);
+#else
+		execl("/usr/bin/python", "-m", "webbrowser", "-t", url.c_str(), 0);
+#endif
 	}
 
 protected:
@@ -148,6 +162,9 @@ class CuteRuiDialog
 public:
 	CuteRuiDialog()
 		: about_(nullptr)
+#ifdef VISIT_COUNT_ENALBED
+		, client((U("www.moem.cc")))
+#endif
 	{
 	}
 
@@ -268,6 +285,11 @@ public:
         root_panel_->addChild(unchanged_image_);
         unchanged_image_->setPosition(PointType { 115.5f, 80.0f });
         showState(0);
+#ifdef VISIT_COUNT_ENALBED
+		web::http::http_request msg(web::http::methods::GET);
+		msg.set_request_uri(U("/software/CuteRUI/launch"));
+		client.request(msg);
+#endif
 	}
 	
 	void close()
@@ -299,6 +321,11 @@ public:
 
 	bool process(const std::string & filename)
 	{
+#ifdef VISIT_COUNT_ENALBED
+		web::http::http_request msg(web::http::methods::GET);
+		msg.set_request_uri(U("/software/CuteRUI/use"));
+		client.request(msg);
+#endif
 #ifdef _WIN32
 		if (qr_text_input_->value().length() == 0) {
 			qr_text_input_->setHintColor(nvgRGBA(0xf4, 0x65, 0x59, 0xff));
@@ -372,6 +399,9 @@ protected:
 	std::shared_future<bool> convertion_finished_;
 	std::shared_ptr<TextBox> qr_text_input_;
 	std::shared_ptr<AboutDialog> about_;
+#ifdef VISIT_COUNT_ENALBED
+	web::http::client::http_client client;
+#endif
 };
 
 int main(void)

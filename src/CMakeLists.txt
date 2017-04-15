@@ -10,5 +10,5 @@ include_directories (../ext/glad/include ../lib/moemtk/include ../lib/moemtk/ext
 add_executable (CuteRUI WIN32 rui DominantColor Button Widget StaticText Image Window EventDispatcher ImageButton
         TextLoader TextBox ../resource/resource.c ../ext/nanovg/nanovg $<$<BOOL:${WIN32}>:cuterui.rc>)
 
-target_link_libraries (CuteRUI glfw glad)
+target_link_libraries (CuteRUI glfw glad cpprest)
 add_dependencies (CuteRUI CuteR)
