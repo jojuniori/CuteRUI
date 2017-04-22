@@ -1,5 +1,7 @@
 # CuteRUI
 
+:floppy_disk: You can download from: [Moem.cc](https://www.moem.cc/software/CuteRUI). 
+
 Use GUI combine QR Code with picture
 
 This software uses code from the [CuteR](https://github.com/chinuno-usami/CuteR).  
