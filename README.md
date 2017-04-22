@@ -11,9 +11,7 @@ Designed by JoJun.
 # Sample
 
 Drag & Drop image into box  
-![sample_input.png](https://github.com/jojuniori/CuteRUI/blob/master/sample_input.png)  
-Output  
-![sample_output.png](https://github.com/jojuniori/CuteRUI/blob/master/sample_output.png)  
+<img src="https://www.moem.cc/images/software/CuteRUI/sample.png" width="495px">
 
 # Download
 
