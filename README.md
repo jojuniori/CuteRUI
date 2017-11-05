@@ -1,4 +1,4 @@
-# CuteRUI
+# CuteRUI [已弃坑]
 
 :floppy_disk: You can download from: [Moem.cc](https://www.moem.cc/software/CuteRUI). 
 
